@@ -6,6 +6,7 @@ int main()
     char keywords[35][10];
     char operators[30][5];
     char inputFromFile[15];
+    char parenthesis[7][2];
     int index = 0;
     int flag = 0;
     strcpy(keywords[32],"char");
@@ -73,6 +74,13 @@ int main()
     strcpy(operators[28],"?:");
 
 
+    strcpy(parenthesis[1],"(");
+    strcpy(parenthesis[2],")");
+    strcpy(parenthesis[3],"{");
+    strcpy(parenthesis[4],"}");
+    strcpy(parenthesis[5],"[");
+    strcpy(parenthesis[6],"]");
+
     for(int i = 0; i<15; i++)
     {
         inputFromFile[i] = '\0';
@@ -115,7 +123,7 @@ int main()
                 if(flag == 0)
                 {
 
-                    if(inputFromFile[0] == ';')
+                    if(inputFromFile[0] == ';' || inputFromFile[0] == ',')
                     {
                         printf("[sep %c]\n",inputFromFile[0]);
                         index = 0;
@@ -142,9 +150,26 @@ int main()
 
                 if(flag == 0)
                 {
+                    inputFromFile[index] = '\0';
+                    for(int j = 1; j<7; j++)
+                    {
+
+                        if(strcmp(parenthesis[j], inputFromFile) == 0)
+                        {
+                            printf("[paren %s]\n", parenthesis[j]);
+                            flag = 1;
+                            index = 0;
+                            break;
+                        }
+
+                    }
+                }
+
+                if(flag == 0)
+                {
 
                     //if(('a' <= inputFromFile[0] && inputFromFile[0] <= 'z') || (inputFromFile[0] == '_') ||('A' <= inputFromFile[0] && inputFromFile[0] <= 'Z'))
-                    if(isalnum(inputFromFile == 1) || (inputFromFile[0] == '_'))
+                    if(isalpha(inputFromFile[0] == 1) || (inputFromFile[0] == '_'))
                     {
 
                         int iterator = 1;
@@ -156,6 +181,7 @@ int main()
                             }
                             else
                             {
+                                printf("[unkn %s]\n", inputFromFile);
                                 flag = 0;
                                 break;
                             }
@@ -165,6 +191,64 @@ int main()
                         {
                             printf("[id %s]\n", inputFromFile);
 
+                        }
+                    }
+                    else if((isdigit(inputFromFile[0]) == 0) && (isalpha(inputFromFile[0])== 0) && ((inputFromFile[0] != '_')))
+                    {
+                        printf("[unkn %s]\n", inputFromFile);
+                    }
+                }
+
+                if(flag == 0)
+                {
+                    int foundDecimal = 0;
+                    if(isdigit(inputFromFile[0]))
+                    {
+                        int iterator = 1;
+                        for(; inputFromFile[iterator]!='\0'; iterator++)
+                        {
+                            if((foundDecimal == 0) && (inputFromFile[iterator] == '.'))
+                            {
+                                foundDecimal = 1;
+                                if((foundDecimal == 1) && (isdigit(inputFromFile[iterator+1]) == 0))
+                                {
+                                    foundDecimal = 0;
+                                    printf("[unkn %s]\n", inputFromFile);
+                                    flag = 3;
+                                    break;
+                                }
+                                if(flag == 3)
+                                {
+                                    flag = 0;
+                                    break;
+                                }
+                            }
+                            else if((foundDecimal == 1) && (inputFromFile[iterator] == '.'))
+                            {
+                                printf("[unkn %s]\n", inputFromFile);
+                                break;
+                            }
+                            else if(isalpha(inputFromFile[iterator]))
+                            {
+                                printf("[unkn %s]\n", inputFromFile);
+                                break;
+                            }
+                            else if(isdigit(inputFromFile[iterator]) == 0)
+                            {
+                                printf("[unkn %s]\n", inputFromFile);
+                                break;
+                            }
+
+                            else
+                            {
+                                flag = 1;
+                            }
+                        }
+
+                        if(flag == 1)
+                        {
+
+                            printf("[var %s]\n", inputFromFile);
                         }
                     }
                 }
