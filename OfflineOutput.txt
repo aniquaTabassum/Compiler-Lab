@@ -1,1 +1,1 @@
-#include<stdio.h> int main() { printf("Hello"); printf("world"); return 0; }
+#include<stdio.h> int main ( ) { int _h1g1 ; a + b ; printf("Hello") ; printf("world") ; return 0 ; }
