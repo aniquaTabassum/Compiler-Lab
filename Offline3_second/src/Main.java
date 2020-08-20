@@ -215,9 +215,28 @@ public class Main {
                 modifiedTokenList.get(index).add(toAdd.get(4));
                 currectIndex++;
             }
+            //delete(funcName, modifiedTokenList);
             return currectIndex;
         }
 
+    }
+    
+    public static int delete(String functionName, ArrayList<ArrayList<String>> modifiedTokenList)
+    {
+        boolean deleted = false;
+        for(int i=0; i<modifiedTokenList.size();){
+            if(modifiedTokenList.get(i).get(3).equals(functionName))
+            {
+                modifiedTokenList.remove(i);
+                deleted = true;
+            }
+            if(!deleted)
+            {
+                i+=1;
+            }
+        }
+
+        return modifiedTokenList.size()-1;
     }
 
     public static boolean isVar(int currentIndex, String[] separated, ArrayList<String> toModify) {
@@ -225,20 +244,6 @@ public class Main {
             return true;
         else
             return false;
-    }
-
-    public static void setScope(boolean varOrFunc, String scope, String functionName) {
-        scope = varOrFunc ? "global" : functionName;
-    }
-
-    public static void findScope(String bracket, String scope, Stack<String> bracketStack) {
-        if (bracket.equals("brc {"))
-            bracketStack.push("{");
-        else
-            bracketStack.pop();
-        if (bracketStack.isEmpty())
-            scope = "global";
-
     }
 
 
